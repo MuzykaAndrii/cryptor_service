@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'include/_navbar.html' %}
+
+<h2 class="mb-5" style="text-align: center;">Create new image</h1>
+
+<div class="row" style='margin-right: 0'>
+    <form action="{% url 'create_picture' %}" method="POST" class='col-md-4 offset-md-4'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-success">Create image</button>
+    </form>
+</div>
+{% include 'include/_footer.html' %}
+
+{% endblock %}

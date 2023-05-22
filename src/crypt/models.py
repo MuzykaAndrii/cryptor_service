@@ -7,7 +7,6 @@ class Picture(models.Model):
     SINUSOIDAL = "sinusoidal"
     CIRCULAR = "sircular"
     TRANSITION = "transition"
-
     PAINT_METHODTS = (
         (SINUSOIDAL, "Sinusoidal"),
         (CIRCULAR, "Circular"),
@@ -16,7 +15,6 @@ class Picture(models.Model):
 
     ENCRYPTION = "encryption"
     DECRYPTION = "decryption"
-
     LAST_ACTION = (
         (ENCRYPTION, "Encryption"),
         (DECRYPTION, "Decryption"),
@@ -25,12 +23,12 @@ class Picture(models.Model):
     width = models.PositiveSmallIntegerField(
         verbose_name="Picture width",
         default=255,
-        validators=[MinValueValidator(100), MaxValueValidator(100)],
+        validators=[MinValueValidator(100), MaxValueValidator(3000)],
     )
     height = models.PositiveSmallIntegerField(
         verbose_name="Picture height",
         default=255,
-        validators=[MinValueValidator(100), MaxValueValidator(100)],
+        validators=[MinValueValidator(100), MaxValueValidator(3000)],
     )
     paint_method = models.CharField(
         max_length=50,
@@ -55,4 +53,14 @@ class Picture(models.Model):
         verbose_name="Last action with this picture",
         blank=True,
         null=True,
+    )
+    last_action_result = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name="Text of last action (encrypted or decrypted)",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Date of creating",
+        db_index=True,
     )
