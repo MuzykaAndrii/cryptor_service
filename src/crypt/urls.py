@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import index, create_picture
+from .views import index, create_picture, show_picture
 
 
 urlpatterns = [
     path("index/", index, name="index"),
-    path("create_image", create_picture, name="create_picture"),
+    path("create_picture", create_picture, name="create_picture"),
+    path("picture/<int:pk>", show_picture, name="show_picture"),
 ]

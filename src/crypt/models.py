@@ -1,3 +1,7 @@
+from secrets import token_hex
+from io import BytesIO
+
+from django.core.files import File
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -5,7 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Picture(models.Model):
     SINUSOIDAL = "sinusoidal"
-    CIRCULAR = "sircular"
+    CIRCULAR = "circular"
     TRANSITION = "transition"
     DRAW_METHODTS = (
         (SINUSOIDAL, "Sinusoidal"),
@@ -20,11 +24,6 @@ class Picture(models.Model):
         (DECRYPTION, "Decryption"),
     )
 
-    name = models.CharField(
-        max_length=20,
-        default="",
-        verbose_name="Picture name",
-    )
     width = models.PositiveSmallIntegerField(
         verbose_name="Picture width",
         default=255,
@@ -69,3 +68,11 @@ class Picture(models.Model):
         verbose_name="Date of creating",
         db_index=True,
     )
+
+    def save(self, img, *args, **kwargs):
+        image_name = token_hex(5) + ".bmp"
+        blob = BytesIO()
+        img.save(blob, "BMP")
+        self.image.save(image_name, File(blob), save=False)
+
+        super(Picture, self).save(*args, **kwargs)

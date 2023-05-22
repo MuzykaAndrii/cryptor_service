@@ -1,6 +1,8 @@
 # user defined
 /src/static
 /.vscode
+/media
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -10,7 +10,7 @@
     <form action="{% url 'create_picture' %}" method="POST" class='col-md-4 offset-md-4'>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-outline-success">Create image</button>
+        <button type="submit" class="btn btn-success">Create image</button>
     </form>
 </div>
 {% include 'include/_footer.html' %}
