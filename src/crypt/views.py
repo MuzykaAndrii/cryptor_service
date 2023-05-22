@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from .forms import PictureCreationForm
+from .painter.painter import Painter
 
 
 def index(request):
@@ -15,7 +16,11 @@ def create_picture(request):
 
     form = PictureCreationForm(request.POST)
     if form.is_valid():
-        print(form)
+        picture = form.save(commit=False)
+
+        picture.owner = request.user
+        picture.image = image
+
         return redirect("create_picture")
 
 
