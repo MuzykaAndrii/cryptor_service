@@ -75,6 +75,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "core/static",
 ]
 
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
 WSGI_APPLICATION = "core.wsgi.application"
 
 
