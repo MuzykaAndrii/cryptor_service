@@ -63,6 +63,11 @@ class Picture(models.Model):
         blank=True,
         verbose_name="Text of last action (encrypted or decrypted)",
     )
+    last_action_date = models.DateField(
+        auto_now=True,
+        verbose_name="Date of last action",
+        db_index=True,
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Date of creating",

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from .forms import PictureCreationForm
@@ -29,4 +29,5 @@ def create_picture(request):
 
 
 def show_picture(request, pk):
-    picture = Picture.objects.get(pk=pk)
+    picture = get_object_or_404(Picture, pk=pk)
+    return render("crypt/show_picture.html", {"picture": picture})
