@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 
-from .forms import PictureCreationForm
+from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
 from .models import Picture
 
 
 def index(request):
-    return HttpResponse("Hello")
+    return render(request, "crypt/index.html")
 
 
 def create_picture(request):
@@ -30,4 +30,11 @@ def create_picture(request):
 
 def show_picture(request, pk):
     picture = get_object_or_404(Picture, pk=pk)
+    if picture.owner != request.user:
+        raise PermissionDenied
     return render(request, "crypt/show_picture.html", {"picture": picture})
+
+
+def picture_action(request):
+    form = PictureActionForm()
+    return render(request, "crypt/picture_action.html", {"form": form})

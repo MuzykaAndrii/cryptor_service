@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .views import index, create_picture, show_picture
+from .views import (
+    index,
+    create_picture,
+    show_picture,
+)
 
 
 urlpatterns = [

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'include/_navbar.html' %}
+
+<div class="container">
+    <h2 class="mb-5" style="text-align: center;">Crypt/decrypt</h2>
+    {{ form.as_p }}
+</div>
+
+
+{% include 'include/_footer.html' %}
+
+{% endblock %}

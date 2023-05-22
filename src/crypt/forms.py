@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from .models import Picture
 
 
@@ -16,3 +16,7 @@ class PictureCreationForm(ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-control"
             visible.field.widget.attrs["placeholder"] = visible.field.label
+
+
+class PictureActionForm(Form):
+    pass
