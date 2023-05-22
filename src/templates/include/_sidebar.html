@@ -1,0 +1,20 @@
+{% load news_tags %}
+{% load cache %}
+
+{% cache 60 sidebar %}
+<div class="list-group">
+  {% get_list_categories as categories %}
+    {% for category in categories %}
+      <a href="{{ category.get_absolute_url }}"
+         class="list-group-item d-flex justify-content-between align-items-center
+         {% if category.pk == current_category.pk %}
+         text-bg-success
+         {% endif %}
+         ">
+         {{ category.title }}
+         <span class="badge text-bg-dark rounded-pill">{{ category.related_news_count }}</span>
+        </a>
+    {% endfor %}
+  </div>
+</div>
+{% endcache %}
