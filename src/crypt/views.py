@@ -1,3 +1,6 @@
+from io import BytesIO
+
+from django.core.files import File
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
@@ -17,9 +20,14 @@ def create_picture(request):
     form = PictureCreationForm(request.POST)
     if form.is_valid():
         picture = form.save(commit=False)
+        painter = Painter(picture.width, picture.height)
+        image = painter.draw(picture.draw_method)
+        blob = BytesIO()
+        image.save(blob, "BMP")
 
         picture.owner = request.user
-        picture.image = image
+        picture.image.save("some_name.bmp", File(blob), save=False)
+        picture.save()
 
         return redirect("create_picture")
 

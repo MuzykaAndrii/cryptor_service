@@ -7,7 +7,7 @@ class Picture(models.Model):
     SINUSOIDAL = "sinusoidal"
     CIRCULAR = "sircular"
     TRANSITION = "transition"
-    PAINT_METHODTS = (
+    DRAW_METHODTS = (
         (SINUSOIDAL, "Sinusoidal"),
         (CIRCULAR, "Circular"),
         (TRANSITION, "Transition"),
@@ -20,6 +20,11 @@ class Picture(models.Model):
         (DECRYPTION, "Decryption"),
     )
 
+    name = models.CharField(
+        max_length=20,
+        default="",
+        verbose_name="Picture name",
+    )
     width = models.PositiveSmallIntegerField(
         verbose_name="Picture width",
         default=255,
@@ -30,9 +35,9 @@ class Picture(models.Model):
         default=255,
         validators=[MinValueValidator(100), MaxValueValidator(3000)],
     )
-    paint_method = models.CharField(
+    draw_method = models.CharField(
         max_length=50,
-        choices=PAINT_METHODTS,
+        choices=DRAW_METHODTS,
         default=TRANSITION,
     )
     owner = models.ForeignKey(

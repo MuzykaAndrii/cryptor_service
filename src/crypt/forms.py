@@ -8,7 +8,7 @@ class PictureCreationForm(ModelForm):
         fields = [
             "width",
             "height",
-            "paint_method",
+            "draw_method",
         ]
 
     def __init__(self, *args, **kwargs):
