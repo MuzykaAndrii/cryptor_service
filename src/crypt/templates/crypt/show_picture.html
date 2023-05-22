@@ -4,11 +4,32 @@
 
 {% include 'include/_navbar.html' %}
 
-<div class="row">
-    <div class="col-md-6">
-        
+<div class="container">
+    <h2 class="mb-5" style="text-align: center;">Image information</h2>
+
+    <div class="row">
+        <div class="col-md-5">
+            <img style="max-width: 500px;" src="{{ picture.image.url }}" class="img-fluid img-thumbnail" alt="{{picture.width}}x{{picture.height}}">
+        </div>
+        <div class="col-md-4">
+            <p>Owner: <b>{{picture.owner.username}}</b></p>
+            <p>Width: {{picture.width}}</p>
+            <p>Height: {{picture.height}}</p>
+            <p>Draw method: <b>{{picture.draw_method}}</b></p>
+            <p>Date creation: <b>{{picture.created_at}}</b></p>
+        </div>
+        <div class="col-md-3">
+            {% if picture.last_action %}
+                <p>Last action: <b>{{picture.last_action}}</b> text: {{last_action_result}}</p>
+                <p>at {{picture.last_action_date}}</p>
+            {% else %}
+                <h4>No actions yet</h4>
+            {% endif %}
+        </div>
     </div>
+    
 </div>
+
 
 {% include 'include/_footer.html' %}
 

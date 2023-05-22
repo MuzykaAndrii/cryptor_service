@@ -30,4 +30,4 @@ def create_picture(request):
 
 def show_picture(request, pk):
     picture = get_object_or_404(Picture, pk=pk)
-    return render("crypt/show_picture.html", {"picture": picture})
+    return render(request, "crypt/show_picture.html", {"picture": picture})
