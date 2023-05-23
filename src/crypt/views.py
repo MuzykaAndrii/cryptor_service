@@ -2,7 +2,7 @@ from pathlib import Path
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
-from django.conf import settings
+from django.contrib import messages
 
 from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
@@ -20,16 +20,20 @@ def create_picture(request):
         return render(request, "crypt/create_picture.html", {"form": form})
 
     form = PictureCreationForm(request.POST)
-    if form.is_valid():
-        picture = form.save(commit=False)
-        picture.owner = request.user
+    if not form.is_valid():
+        messages.error(request, "Picture data are not valid")
+        return redirect("create_picture")
 
-        painter = Painter(picture.width, picture.height)
-        image = painter.draw(picture.draw_method)
+    picture = form.save(commit=False)
+    picture.owner = request.user
 
-        picture.save(image)
+    painter = Painter(picture.width, picture.height)
+    image = painter.draw(picture.draw_method)
 
-        return redirect("show_picture", pk=picture.pk)
+    picture.save(image)
+
+    messages.success(request, "Picture created successfully")
+    return redirect("show_picture", pk=picture.pk)
 
 
 def show_picture(request, pk):
@@ -51,19 +55,25 @@ def picture_action(request):
         pictures = Picture.objects.filter(owner=request.user)[:3]
         form = PictureActionForm(pictures, request.POST)
 
-        if form.is_valid():
-            image_pk = form.cleaned_data["image"]
-            text = form.cleaned_data["text"]
-            action = form.cleaned_data["last_action"]
-            picture = Picture.objects.get(pk=image_pk)
+        if not form.is_valid():
+            messages.error("Wrong action data received")
+            return redirect("picture_action")
 
-            if action == "encryption":
-                image_file_path = picture.image.path
-                image_crypted = hide(image_file_path, text)
+        image_pk = form.cleaned_data["image"]
+        text = form.cleaned_data["text"]
+        action = form.cleaned_data["last_action"]
+        picture = Picture.objects.get(pk=image_pk)
 
-                picture.last_action = action
-                picture.last_action_result = text
-                picture.save(image_crypted)
+        if action == "encryption":
+            image_file_path = picture.image.path
+            image_crypted = hide(image_file_path, text)
 
-            elif action == "decryption":
-                pass
+            picture.last_action = action
+            picture.last_action_result = text
+            picture.save(image_crypted)
+
+            messages.success(request, "Text crypted successfully")
+            return redirect("index")
+
+        elif action == "decryption":
+            pass

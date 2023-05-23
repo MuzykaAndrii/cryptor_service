@@ -1,7 +1,6 @@
 from secrets import token_hex
 from io import BytesIO
 
-from django.utils.html import format_html
 from django.core.files import File
 from django.db import models
 from django.contrib.auth.models import User
@@ -85,7 +84,10 @@ class Picture(models.Model):
         super(Picture, self).save(*args, **kwargs)
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = (
+            "-last_action_date",
+            "-created_at",
+        )
 
     def __str__(self):
         return f"Owner: {self.owner.username}, {self.width}x{self.height}, draw method: {self.draw_method}, id: {self.pk}"
