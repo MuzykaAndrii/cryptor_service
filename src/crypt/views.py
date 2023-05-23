@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
@@ -7,13 +5,8 @@ from django.contrib import messages
 from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
 from .models import Picture
-from .cryptor.cryptor import (
-    show,
-    hide,
-    clear_usefull_data,
-    open_bmp,
-)
-from .cryptor.exceptions import TooSmallImageError
+from .services.encryption import encryptor
+from .services.decryption import decryptor
 
 
 def index(request):
@@ -58,58 +51,26 @@ def picture_action(request):
             request, "crypt/picture_action.html", {"form": form, "pictures": pictures}
         )
 
-    pictures = Picture.objects.filter(owner=request.user)[:3]
-    form = PictureActionForm(pictures, request.POST)
-    print(form.errors)
-    if not form.is_valid() or not form.cleaned_data["image"]:
-        messages.error(request, "Wrong form data received")
-        return redirect("picture_action")
+    if request.method == "POST":
+        pictures = Picture.objects.filter(owner=request.user)[:3]
+        form = PictureActionForm(pictures, request.POST)
 
-    image_pk = form.cleaned_data["image"]
-    text = form.cleaned_data["text"]
-    action = form.cleaned_data["last_action"]
-    picture = Picture.objects.get(pk=image_pk)
-    image_file_path = picture.image.path
-
-    if action == "encryption":
-        if not text.isascii():
-            messages.error(request, "The input text should be an ASCII string")
+        if not form.is_valid() or not form.cleaned_data["image"]:
+            messages.error(request, "Wrong form data received")
             return redirect("picture_action")
 
-        image = open_bmp(image_file_path)
+        image_pk = form.cleaned_data["image"]
+        text = form.cleaned_data["text"]
+        action = form.cleaned_data["last_action"]
+        picture = Picture.objects.get(pk=image_pk)
+        image_file_path = picture.image.path
 
-        if picture.last_action == "encryption":
-            image = clear_usefull_data(image)
+        if action == "encryption":
+            return encryptor(request, text, picture, image_file_path, action, image_pk)
 
-        try:
-            image_crypted = hide(image, text)
-        except TooSmallImageError:
-            messages.error(
-                request,
-                "The given text is too large for encryption for this image, select another image or make text more breif",
-            )
+        elif action == "decryption":
+            return decryptor(request, picture, image_file_path, action, image_pk)
+
+        else:
+            messages.error(request, "Invalid action")
             return redirect("picture_action")
-
-        picture.last_action = action
-        picture.last_action_result = text
-        picture.save(image_crypted)
-
-        messages.success(request, "Text crypted successfully")
-        return redirect("show_picture", pk=image_pk)
-
-    elif action == "decryption":
-        if not picture.last_action:
-            messages.warning(request, "This picture havent crypted text")
-            return redirect("picture_action")
-
-        decrypted_text = show(image_file_path)
-        picture.last_action = action
-        picture.last_action_result = decrypted_text
-        picture.save(None)
-
-        messages.success(request, f"Decrypted text: {decrypted_text}")
-        return redirect("show_picture", pk=image_pk)
-
-    else:
-        messages.error(request, "Wrong form data received")
-        return redirect("picture_action")

@@ -18,8 +18,7 @@ END_OF_MESSAGE_SIGN = "/em."
 binary_handler = BinaryHandler(END_OF_MESSAGE_SIGN)
 
 
-def clear_usefull_data(img_path: str):
-    img = open_bmp(img)
+def clear_usefull_data(img: Image):
     height, width = img.height, img.width
     pixels = img.load()
 
