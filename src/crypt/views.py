@@ -8,6 +8,7 @@ from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
 from .models import Picture
 from .cryptor.cryptor import show, hide
+from .cryptor.exceptions import TooSmallImageError
 
 
 def index(request):
@@ -63,17 +64,42 @@ def picture_action(request):
         text = form.cleaned_data["text"]
         action = form.cleaned_data["last_action"]
         picture = Picture.objects.get(pk=image_pk)
+        image_file_path = picture.image.path
 
         if action == "encryption":
-            image_file_path = picture.image.path
-            image_crypted = hide(image_file_path, text)
+            if not text.isascii():
+                messages.error(request, "The input text should be an ASCII string")
+                return redirect("picture_action")
+
+            if picture.last_action == "encryption":
+                # TODO: refresh all junior bits in the picture
+                pass
+
+            try:
+                image_crypted = hide(image_file_path, text)
+            except TooSmallImageError:
+                messages.error(
+                    request,
+                    "The given text is too large for encryption for this image, select another image or make text more breif",
+                )
+                return redirect("picture_action")
 
             picture.last_action = action
             picture.last_action_result = text
             picture.save(image_crypted)
 
             messages.success(request, "Text crypted successfully")
-            return redirect("index")
+            return redirect("show_picture", pk=image_pk)
 
         elif action == "decryption":
-            pass
+            if not picture.last_action:
+                messages.warning(request, "This picture have no crypted text")
+                return redirect("picture_action")
+
+            decrypted_text = show(image_file_path)
+            picture.last_action = action
+            picture.last_action_result = decrypted_text
+            picture.save(None)
+
+            messages.success(request, f"Decrypted text: {decrypted_text}")
+            return redirect("show_picture", pk=image_pk)

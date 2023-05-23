@@ -8,22 +8,16 @@ from typing import (
     Literal,
 )
 
+from .exceptions import (
+    TooSmallImageError,
+    InvalidBitsError,
+    InvalidImageExtensionError,
+)
+
 
 END_OF_MESSAGE_SIGN = "/em."
 END_OF_MESSAGE_SIGN_LENGTH = len(END_OF_MESSAGE_SIGN)
 END_OF_MESSAGE_SIGN_LIST = list(END_OF_MESSAGE_SIGN)
-
-
-class TooSmallImageError(Exception):
-    pass
-
-
-class InvalidBitsError(Exception):
-    pass
-
-
-class InvalidImageExtensionError(Exception):
-    pass
 
 
 class Pixel:

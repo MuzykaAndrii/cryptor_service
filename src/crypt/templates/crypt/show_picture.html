@@ -8,10 +8,11 @@
     <h2 class="mb-5" style="text-align: center;">Picture information</h2>
 
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <img style="max-width: 400px;" src="{{ picture.image.url }}" class="img-fluid img-thumbnail" alt="{{picture.width}}x{{picture.height}}">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <h5 class="mb-2">Picture information:</h5>
             <p>Owner: <b>{{picture.owner.username}}</b></p>
             <p>Width: <b>{{picture.width}}</b></p>
             <p>Height: <b>{{picture.height}}</b></p>
@@ -19,8 +20,10 @@
             <p>Date creation: <b>{{picture.created_at}}</b></p>
         </div>
         <div class="col-md-3">
+            <h5 class="mb-2">Picture last action:</h5>
             {% if picture.last_action %}
-                <p>Last action: <b>{{picture.last_action}}</b> text: {{last_action_result}}</p>
+                <p>Last action: <b>{{picture.last_action}}</b></p>
+                <p>Text: <b>{{picture.last_action_result}}</b></p>
                 <p>at {{picture.last_action_date}}</p>
             {% else %}
                 <h4 class="disabled">No actions yet</h4>
