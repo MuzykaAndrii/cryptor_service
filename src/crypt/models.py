@@ -1,6 +1,7 @@
 from secrets import token_hex
 from io import BytesIO
 
+from django.utils.html import format_html
 from django.core.files import File
 from django.db import models
 from django.contrib.auth.models import User
@@ -63,7 +64,7 @@ class Picture(models.Model):
         blank=True,
         verbose_name="Text of last action (encrypted or decrypted)",
     )
-    last_action_date = models.DateField(
+    last_action_date = models.DateTimeField(
         auto_now=True,
         verbose_name="Date of last action",
         db_index=True,
@@ -75,9 +76,13 @@ class Picture(models.Model):
     )
 
     def save(self, img, *args, **kwargs):
-        image_name = token_hex(5) + ".bmp"
-        blob = BytesIO()
-        img.save(blob, "BMP")
-        self.image.save(image_name, File(blob), save=False)
+        if not self.image:
+            image_name = token_hex(5) + ".bmp"
+            blob = BytesIO()
+            img.save(blob, "BMP")
+            self.image.save(image_name, File(blob), save=False)
 
         super(Picture, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ("-created_at",)

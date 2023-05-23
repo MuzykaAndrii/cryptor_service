@@ -1,8 +1,8 @@
-from django.forms import ModelForm, Form
+from django import forms
 from .models import Picture
 
 
-class PictureCreationForm(ModelForm):
+class PictureCreationForm(forms.ModelForm):
     class Meta:
         model = Picture
         fields = [
@@ -18,5 +18,24 @@ class PictureCreationForm(ModelForm):
             visible.field.widget.attrs["placeholder"] = visible.field.label
 
 
-class PictureActionForm(Form):
-    pass
+class PictureActionForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea)
+    image = forms.ChoiceField(
+        choices=[],
+        # widget=forms.RadioSelect,
+    )
+
+    class Meta:
+        model = Picture
+        fields = [
+            "last_action",
+        ]
+
+    def __init__(self, pictures, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["image"].choices += [(picture.pk, "") for picture in pictures]
+
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+            visible.field.widget.attrs["placeholder"] = visible.field.label

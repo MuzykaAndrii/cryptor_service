@@ -36,5 +36,14 @@ def show_picture(request, pk):
 
 
 def picture_action(request):
-    form = PictureActionForm()
-    return render(request, "crypt/picture_action.html", {"form": form})
+    if request.method == "GET":
+        pictures = Picture.objects.filter(owner=request.user)[:3]
+        form = PictureActionForm(pictures)
+
+        return render(
+            request, "crypt/picture_action.html", {"form": form, "pictures": pictures}
+        )
+    else:
+        pictures = Picture.objects.filter(owner=request.user)[:3]
+        form = PictureActionForm(pictures, request.POST)
+        print(form.errors)
