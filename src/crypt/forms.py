@@ -22,7 +22,7 @@ class PictureActionForm(forms.ModelForm):
     text = forms.CharField(widget=forms.Textarea)
     image = forms.ChoiceField(
         choices=[],
-        # widget=forms.RadioSelect,
+        required=False,
     )
 
     class Meta:
@@ -35,6 +35,8 @@ class PictureActionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["image"].choices += [(picture.pk, "") for picture in pictures]
+
+        self.fields["text"].required = False
 
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-control"

@@ -7,7 +7,7 @@ from django.contrib import messages
 from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
 from .models import Picture
-from .cryptor.cryptor import show, hide
+from .cryptor.cryptor import show, hide, clear_usefull_data, open_bmp
 from .cryptor.exceptions import TooSmallImageError
 
 
@@ -55,9 +55,9 @@ def picture_action(request):
     else:
         pictures = Picture.objects.filter(owner=request.user)[:3]
         form = PictureActionForm(pictures, request.POST)
-
-        if not form.is_valid():
-            messages.error("Wrong action data received")
+        print(form.errors)
+        if not form.is_valid() or not form.cleaned_data["image"]:
+            messages.error(request, "Wrong form data received")
             return redirect("picture_action")
 
         image_pk = form.cleaned_data["image"]
@@ -71,12 +71,13 @@ def picture_action(request):
                 messages.error(request, "The input text should be an ASCII string")
                 return redirect("picture_action")
 
+            image = open_bmp(image_file_path)
+
             if picture.last_action == "encryption":
-                # TODO: refresh all junior bits in the picture
-                pass
+                image = clear_usefull_data(image)
 
             try:
-                image_crypted = hide(image_file_path, text)
+                image_crypted = hide(image, text)
             except TooSmallImageError:
                 messages.error(
                     request,
@@ -93,7 +94,7 @@ def picture_action(request):
 
         elif action == "decryption":
             if not picture.last_action:
-                messages.warning(request, "This picture have no crypted text")
+                messages.warning(request, "This picture havent crypted text")
                 return redirect("picture_action")
 
             decrypted_text = show(image_file_path)
@@ -103,3 +104,7 @@ def picture_action(request):
 
             messages.success(request, f"Decrypted text: {decrypted_text}")
             return redirect("show_picture", pk=image_pk)
+
+        else:
+            messages.error(request, "Wrong form data received")
+            return redirect("picture_action")

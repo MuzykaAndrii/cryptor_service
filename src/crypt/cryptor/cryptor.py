@@ -1,4 +1,5 @@
 from PIL import Image
+from random import randint
 from itertools import (
     chain,
     product,
@@ -106,10 +107,24 @@ def pack_up_bits(bits: list[0 | 1]) -> Annotated[list[str], 8]:
     return bits_groupped
 
 
-def hide(img: str, text: str):
-    img = open_bmp(img)
+def hide(img, text: str):
     text: list[Literal["0"] | Literal["1"]] = str_to_bits(text)
     img = encode_bits(img, text)
+
+    return img
+
+
+def clear_usefull_data(img_path: str):
+    img = open_bmp(img)
+    height, width = img.height, img.width
+    pixels = img.load()
+
+    for x, y in product(range(width), range(height)):
+        pixel = Pixel(*pixels[x, y])
+
+        pixel.r[-1] = randint(0, 1)
+        pixel.g[-1] = randint(0, 1)
+        pixel.b[-1] = randint(0, 1)
 
     return img
 
