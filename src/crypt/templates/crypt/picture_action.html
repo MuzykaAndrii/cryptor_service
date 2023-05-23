@@ -23,11 +23,12 @@
                         {% endif %}
                     </div>
                     <div style="margin: 0 20px;">
-                        <img src="{{picture.image.url}}" class="image-fluid" style="max-width: 100px;" alt="">
+                        <a href="{{ picture.get_absolute_url }}">
+                            <img src="{{picture.image.url}}" class="image-fluid" style="max-width: 100px;" alt="">
+                        </a>
                     </div>
                     <div class="">
                         <input type="radio" name="image" class="form-check-input" value="{{picture.pk}}">
-    
                     </div>
                 </div>
                 {% endfor %}
@@ -41,7 +42,7 @@
                 <br>
                 {{ form.text }}
                 <br>
-                <input type="submit" value="submit action" class="btn btn-success">          
+                <input type="submit" value="Submit action" class="btn btn-success">          
             </div>
             
         </form>

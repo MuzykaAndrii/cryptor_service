@@ -4,6 +4,7 @@ from io import BytesIO
 from django.core.files import File
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -88,6 +89,9 @@ class Picture(models.Model):
             "-last_action_date",
             "-created_at",
         )
+
+    def get_absolute_url(self):
+        return reverse("show_picture", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f"Owner: {self.owner.username}, {self.width}x{self.height}, draw method: {self.draw_method}, id: {self.pk}"
