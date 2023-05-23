@@ -1,9 +1,13 @@
+from pathlib import Path
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 
 from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
 from .models import Picture
+from .cryptor.cryptor import show, hide
 
 
 def index(request):
@@ -46,4 +50,20 @@ def picture_action(request):
     else:
         pictures = Picture.objects.filter(owner=request.user)[:3]
         form = PictureActionForm(pictures, request.POST)
-        print(form.errors)
+
+        if form.is_valid():
+            image_pk = form.cleaned_data["image"]
+            text = form.cleaned_data["text"]
+            action = form.cleaned_data["last_action"]
+            picture = Picture.objects.get(pk=image_pk)
+
+            if action == "encryption":
+                image_file_path = picture.image.path
+                image_crypted = hide(image_file_path, text)
+
+                picture.last_action = action
+                picture.last_action_result = text
+                picture.save(image_crypted)
+
+            elif action == "decryption":
+                pass

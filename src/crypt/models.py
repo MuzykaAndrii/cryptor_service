@@ -76,7 +76,7 @@ class Picture(models.Model):
     )
 
     def save(self, img, *args, **kwargs):
-        if not self.image:
+        if img:
             image_name = token_hex(5) + ".bmp"
             blob = BytesIO()
             img.save(blob, "BMP")
@@ -86,3 +86,6 @@ class Picture(models.Model):
 
     class Meta:
         ordering = ("-created_at",)
+
+    def __str__(self):
+        return f"Owner: {self.owner.username}, {self.width}x{self.height}, draw method: {self.draw_method}, id: {self.pk}"

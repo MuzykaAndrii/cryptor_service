@@ -112,7 +112,8 @@ def pack_up_bits(bits: list[0 | 1]) -> Annotated[list[str], 8]:
     return bits_groupped
 
 
-def hide(img: Image, text: str):
+def hide(img: str, text: str):
+    img = open_bmp(img)
     text: list[Literal["0"] | Literal["1"]] = str_to_bits(text)
     img = encode_bits(img, text)
 
@@ -147,8 +148,8 @@ def encode_bits(img: Image, bits: list[Literal["0"], Literal["1"]]) -> Image:
 
 
 def open_bmp(filename: str):
-    if not filename.endswith(".bmp"):
-        raise InvalidImageExtensionError
+    # if not filename.endswith(".bmp"):
+    #     raise InvalidImageExtensionError
 
     img = Image.open(filename)
 
