@@ -22,6 +22,11 @@
           <a href="{% url "picture_action" %}" class="nav-link">Encrypt / Decrypt</a>
         </li>
         {% endif %}
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a href="{% url "pictures_list" %}" class="nav-link">Pictures list</a>
+        </li>
+        {% endif %}
       </ul>
       <div class="nav-item dropdown btn btn-outline-secondary">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

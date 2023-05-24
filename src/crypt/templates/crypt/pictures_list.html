@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'include/_navbar.html' %}
+
+<div class="container">
+    <h2 class="mb-5" style="text-align: center;">Youre pictures</h2>
+    <div class="row">
+        {% for picture in pictures %}
+        
+        <div class="col-md-3" style="border: 1px solid #495057;">
+            <p style="text-align: center;">{{picture.width}} x {{picture.height}}</p>
+            <img src="{{picture.image.url}}" width="300px;" height="300px" alt="" style="object-fit: cover;">
+            <span>Draw method: <b>{{ picture.draw_method }}</b></span><br>
+            <span>Created at: <b>{{ picture.created_at }}</b></span><br>
+            {% if picture.last_action %}
+            <span>Last action: <b>{{ picture.last_action }}</b> at <b>{{ picture.last_action_date }}</b></span><br>
+            <span>Text: <b>{{ picture.last_action_result|slice:"20" }}</b>...</span>
+            {% else %}
+            <span>No actions yet</span>
+            {% endif %}
+            <br><a class="btn btn-link" href="{{ picture.get_absolute_url }}">Open</a>
+        </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+    
+    {% endblock %}

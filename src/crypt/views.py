@@ -74,3 +74,9 @@ def picture_action(request):
         else:
             messages.error(request, "Invalid action")
             return redirect("picture_action")
+
+
+def pictures_list(request):
+    pictures = Picture.objects.filter(owner=request.user)
+
+    return render(request, "crypt/pictures_list.html", {"pictures": pictures})
