@@ -8,23 +8,30 @@
     <h2 class="mb-5" style="text-align: center;">The encryption service</h2>
 
     <div class="row">
-        <div class="col-md-4">
-            <h4 class="mb-3" style="text-align: center;">User guide</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis debitis similique error laboriosam nihil voluptates ad officia, cupiditate perferendis praesentium architecto eveniet cum quia, porro adipisci est minima ipsa inventore.
-            Error, deserunt, natus molestiae accusantium quae, numquam adipisci illum ipsum consectetur labore exercitationem facilis voluptates. Voluptatem amet delectus mollitia ipsam laborum, repudiandae quae totam consectetur maxime architecto explicabo in pariatur!
-            Necessitatibus similique aut illum quae harum, voluptatibus reiciendis vitae atque doloribus eveniet. Aperiam asperiores eos quas, nam aliquam ut provident ducimus explicabo necessitatibus numquam porro, suscipit quo? Excepturi, iure aut.</p>
+        <div class="col-md-3">
+            <h4 class="mb-3" style="text-align: center;">Про програму</h4>
+            <p>Дана програма розроблена для швидшої і простішої побудови і роботи з бітовими картами. Програма являє собою веб-сервіс, з можливістю авторизації і історією операцій з бітовими мапами.</p>
         </div>
         <div class="col-md-4">
-            <h4 class="mb-3" style="text-align: center;">About program</h4>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos recusandae repellat, voluptate non dicta perferendis in sapiente distinctio, dolores architecto dolore voluptates, aut omnis corporis! Iusto cupiditate odit cumque autem.
-            Minus quisquam natus deleniti quidem, delectus amet fuga recusandae laudantium ea eligendi quam. Amet est perspiciatis ex modi obcaecati corrupti sequi sit dolorem cum, autem minima porro, laboriosam facere unde?
-            Beatae blanditiis consequatur ullam reprehenderit cum. Ipsum debitis totam quas libero hic. A maxime distinctio provident perferendis cupiditate sint quisquam dolor explicabo nesciunt tenetur magni, qui, obcaecati repellendus, iusto rem.</p>
+            <h4 class="mb-3" style="text-align: center;">Інструкція користувача</h4>
+            <p>Для використання сервісу потрібно: провести <a href="{% url 'register_user' %}">авторизацію/реєстрацію</a></p>
+            <p>На сторінці <a href="{% url 'create_picture' %}">Create picture</a> можна створити власну бітову карту для подальшої взаємодії. Доступні три методи створення бітової карти: Синусоїдальний, Круговий, Градієнт переходу</p>
+            <p>Список усіх бітових мап доступний за посиланням: <a href="{% url 'pictures_list' %}">Pictures list</a></p>
+            <p>За посиланням: <a href="{% url 'picture_action' %}">Останні дії</a> можна переглянути останні взіємодії з бітовими картами.</p>
         </div>
-        <div class="col-md-4">
-            <h4 class="mb-3" style="text-align: center;">About authors</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur, reiciendis ducimus ut, et repudiandae deleniti ratione fuga, qui accusamus perspiciatis exercitationem hic repellendus facilis! Doloremque expedita modi aperiam libero! Voluptatem.
-            Excepturi nemo, saepe eos recusandae voluptate nulla vitae velit repellat culpa, aperiam, unde maxime ea aut facilis et earum dolorem commodi quasi quam soluta provident rem enim architecto ipsa. Fuga.
-            Obcaecati a, voluptatem quas eligendi repellat hic fugiat, consequatur distinctio repudiandae nostrum voluptatibus quos accusantium dolorum odit quaerat consectetur accusamus placeat expedita reprehenderit, quisquam delectus nihil veniam. Natus, sint nemo.</p>
+        <div class="col-md-5">
+            <h4 class="mb-3" style="text-align: center;">Про авторів</h4>
+            <p>Авторами даного проекту  є троє студентів 3 курсу Прикарпатського національного унверситету імені Василя Стефаника факультету математики та інформатика кафедри комп’ютенрих наук та інформаційних систем групи КН-31: </p>
+                <b>Бардаль Ростислав Васильович</b><br>
+                <b>Бойко Маркіян Мирославович</b><br>
+                <b>Курман Денис Андрійович</b><br><br>
+                
+                Для зворотнього зв’язку писати одному із нас на телеграм: <br>
+                <b>Ростислав Васильович:</b> <a href="https://t.me/Rostik79">@Rostik79</a> <br>
+                <b>Маркіян Мирославович:</b> <a href="https://t.me/khronos3">@khronos3</a> <br>
+                <b>Денис Андрійович:</b> <a href="https://t.me/subie">@subie</a> <br><br>
+                
+                <p> Автори доклали всіх зусиль для розробки даного проекту, якщо даний проект Вам допоміг будемо раді отримати від вас фітбек)</p>
         </div>
     </div>
 
