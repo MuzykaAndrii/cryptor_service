@@ -55,7 +55,7 @@ class Picture(models.Model):
     last_action = models.CharField(
         max_length=50,
         choices=LAST_ACTION,
-        verbose_name="Last action with this picture",
+        verbose_name="Action:",
         blank=True,
         null=True,
     )

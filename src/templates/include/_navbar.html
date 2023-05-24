@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
   <div class="container-fluid container">
-    <a class="navbar-brand" href="{% url 'index' %}">Main page</a>
+    <a class="navbar-brand disabled" href="{% url "picture_action" %}">Cryptor</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -19,16 +19,14 @@
         {% endif %}
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a href="{% url "picture_action" %}" class="nav-link">Encrypt / Decrypt</a>
-        </li>
-        {% endif %}
-        {% if request.user.is_authenticated %}
-        <li class="nav-item">
           <a href="{% url "pictures_list" %}" class="nav-link">Pictures list</a>
         </li>
         {% endif %}
       </ul>
-      <div class="nav-item dropdown btn btn-outline-secondary">
+      <div style="margin-right: 15px;" class="nav-item">
+        <a href="{% url "about" %}" class="nav-link">About us</a>
+      </div>
+      <div class="nav-item dropdown btn btn-outline-secondary ml-3">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           {% if request.user.is_authenticated %}
           {{ request.user.username }}

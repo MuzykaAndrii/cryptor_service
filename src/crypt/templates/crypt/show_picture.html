@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 {% include 'include/_navbar.html' %}
@@ -8,8 +10,8 @@
     <h2 class="mb-5" style="text-align: center;">Picture information</h2>
 
     <div class="row">
-        <div class="col-md-4">
-            <img style="max-width: 400px;" src="{{ picture.image.url }}" class="img-fluid img-thumbnail" alt="{{picture.width}}x{{picture.height}}">
+        <div class="col-md-3">
+            <img style="max-width: 100%;" src="{{ picture.image.url }}" class="img-fluid img-thumbnail" alt="{{picture.width}}x{{picture.height}}">
         </div>
         <div class="col-md-3">
             <h5 class="mb-2">Picture information:</h5>
@@ -27,7 +29,15 @@
                 <p>at {{picture.last_action_date}}</p>
             {% else %}
                 <h4 class="disabled">No actions yet</h4>
-            {% endif %}
+            {% endif %}            
+        </div>
+        <div class="col-md-3">
+            <h5 class="mb-2">Encrypt, decrypt this picture</h5>
+            <form action="{% url 'show_picture' pk=picture.pk %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input class="btn btn-success" type="submit" value="Submit action">
+            </form>
         </div>
     </div>
     
@@ -37,3 +47,7 @@
 {% include 'include/_footer.html' %}
 
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static "crypt/js/action.js" %}"></script>
+{% endblock scripts %}

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    index,
+    about,
     create_picture,
     show_picture,
     picture_action,
@@ -10,9 +10,9 @@ from .views import (
 
 
 urlpatterns = [
-    path("", index, name="index"),
+    path("", picture_action, name="picture_action"),
+    path("about/", about, name="about"),
     path("create_picture", create_picture, name="create_picture"),
     path("picture/<int:pk>", show_picture, name="show_picture"),
-    path("action/", picture_action, name="picture_action"),
     path("pictures/", pictures_list, name="pictures_list"),
 ]

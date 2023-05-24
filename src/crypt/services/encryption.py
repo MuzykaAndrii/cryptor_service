@@ -9,10 +9,10 @@ from crypt.cryptor.cryptor import (
 )
 
 
-def encryptor(request, text, picture, image_file_path, action, image_pk):
+def encryptor(request, text, picture, image_file_path, action, image_pk, redirect_):
     if not text.isascii():
         messages.error(request, "The input text should be an ASCII string")
-        return redirect("picture_action")
+        return redirect_
 
     image = open_bmp(image_file_path)
 
@@ -26,11 +26,11 @@ def encryptor(request, text, picture, image_file_path, action, image_pk):
             request,
             "The given text is too large for encryption for this image, select another image or make text more breif",
         )
-        return redirect("picture_action")
+        return redirect_
 
     picture.last_action = action
     picture.last_action_result = text
     picture.save(image_crypted)
 
-    messages.success(request, "Text crypted successfully")
+    messages.warning(request, "Text crypted successfully")
     return redirect("show_picture", pk=image_pk)
