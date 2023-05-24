@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .forms import PictureCreationForm, PictureActionForm
 from .painter.painter import Painter
@@ -9,10 +10,12 @@ from .services.encryption import encryptor
 from .services.decryption import decryptor
 
 
+@login_required(login_url="login_user")
 def index(request):
     return render(request, "crypt/index.html")
 
 
+@login_required(login_url="login_user")
 def create_picture(request):
     if request.method == "GET":
         form = PictureCreationForm()
@@ -35,6 +38,7 @@ def create_picture(request):
     return redirect("show_picture", pk=picture.pk)
 
 
+@login_required(login_url="login_user")
 def show_picture(request, pk):
     picture = get_object_or_404(Picture, pk=pk)
     if picture.owner != request.user:
@@ -42,6 +46,7 @@ def show_picture(request, pk):
     return render(request, "crypt/show_picture.html", {"picture": picture})
 
 
+@login_required(login_url="login_user")
 def picture_action(request):
     if request.method == "GET":
         pictures = Picture.objects.filter(owner=request.user)[:3]
@@ -76,6 +81,7 @@ def picture_action(request):
             return redirect("picture_action")
 
 
+@login_required(login_url="login_user")
 def pictures_list(request):
     pictures = Picture.objects.filter(owner=request.user)
 
