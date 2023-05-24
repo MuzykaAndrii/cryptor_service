@@ -10,7 +10,6 @@ from .services.encryption import encryptor
 from .services.decryption import decryptor
 
 
-@login_required(login_url="login_user")
 def about(request):
     return render(request, "crypt/about.html")
 
